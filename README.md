@@ -47,6 +47,10 @@ Related
 History Log
 =============
 
+- 1.0.1 -- 2019-10-08
+
+    - adding example
+    
 - 1.0.0 -- 2019-10-08
 
     - initial commit
