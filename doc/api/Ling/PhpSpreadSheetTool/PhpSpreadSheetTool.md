@@ -54,3 +54,6 @@ See the source code of [Ling\PhpSpreadSheetTool\PhpSpreadSheetTool](https://gith
 
 
 
+SeeAlso
+==============
+Previous class: [PhpSpreadSheetToolException](https://github.com/lingtalfi/PhpSpreadSheetTool/blob/master/doc/api/Ling/PhpSpreadSheetTool/Exception/PhpSpreadSheetToolException.md)<br>

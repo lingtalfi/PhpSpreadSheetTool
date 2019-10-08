@@ -4,8 +4,9 @@
 namespace Ling\PhpSpreadSheetTool;
 
 
+use Ling\Bat\FileSystemTool;
+use Ling\PhpSpreadSheetTool\Exception\PhpSpreadSheetToolException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * The PhpSpreadSheetTool class.
@@ -26,11 +27,18 @@ class PhpSpreadSheetTool
      * - html
      * - csv
      * - pdf (if one of Tcpdf, Dompdf, mPDF is installed)
+     *      Note: this implementation ships with tcpdf, so you
+     *      can use the pdf extension out of the box.
+     *
      *
      *
      *
      * Available options are:
      * - columnNames: an array of column names to prepend to the rows.
+     * - csv: (only if the csv file format is used)
+     *      - delimiter: string = , (semicolon), the delimiter char
+     *      - enclosure: string = " (double quote), the enclosure char
+     *      - lineEnding: string = PHP_EOL, the line ending char
      *
      *
      *
@@ -62,7 +70,42 @@ class PhpSpreadSheetTool
         }
 
 
-        $writer = new Xlsx($spreadsheet);
+        // https://phpspreadsheet.readthedocs.io/en/latest/topics/reading-and-writing-to-file/
+        $extension = FileSystemTool::getFileExtension($file);
+        switch ($extension) {
+            case "ods":
+                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Ods($spreadsheet);
+                break;
+            case "xlsx":
+                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                break;
+            case "xls":
+                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+                break;
+            case "html":
+                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Html($spreadsheet);
+                break;
+            case "csv":
+                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+                $csvOptions = $options['csv'] ?? [];
+                if (array_key_exists('delimiter', $csvOptions)) {
+                    $writer->setDelimiter($csvOptions['delimiter']);
+                }
+                if (array_key_exists('enclosure', $csvOptions)) {
+                    $writer->setEnclosure($csvOptions['enclosure']);
+                }
+                if (array_key_exists('lineEnding', $csvOptions)) {
+                    $writer->setLineEnding($csvOptions['lineEnding']);
+                }
+                break;
+            case "pdf":
+                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Tcpdf');
+                break;
+            default:
+                throw new PhpSpreadSheetToolException("Don't know how to handle file $file with extension $extension.");
+                break;
+        }
+
         $writer->save($file);
     }
 }

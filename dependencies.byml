@@ -1,4 +1,8 @@
-dependencies: []
+dependencies: 
+    Ling: 
+        - Bat
+    
+
 post_install: 
     map: true
     composer: 
