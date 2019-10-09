@@ -47,6 +47,10 @@ Related
 History Log
 =============
 
+- 1.0.3 -- 2019-10-09
+
+    - add PhpSpreadSheetTool::createFileByRows options.extension 
+    
 - 1.0.2 -- 2019-10-08
 
     - fix PhpSpreadSheetTool::createFileByRows not using proper writer

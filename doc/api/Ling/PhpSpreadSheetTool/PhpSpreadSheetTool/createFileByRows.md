@@ -41,6 +41,10 @@ Available options are:
      - delimiter: string = , (semicolon), the delimiter char
      - enclosure: string = " (double quote), the enclosure char
      - lineEnding: string = PHP_EOL, the line ending char
+- extension: string, to force extension.
+         You might want to use it when using:
+             - file: php://output
+             - options.extension: xls (or whatever extension)
 
 
 
@@ -165,7 +169,7 @@ az();
 
 Source Code
 ===========
-See the source code for method [PhpSpreadSheetTool::createFileByRows](https://github.com/lingtalfi/PhpSpreadSheetTool/blob/master/PhpSpreadSheetTool.php#L51-L110)
+See the source code for method [PhpSpreadSheetTool::createFileByRows](https://github.com/lingtalfi/PhpSpreadSheetTool/blob/master/PhpSpreadSheetTool.php#L55-L117)
 
 
 See Also

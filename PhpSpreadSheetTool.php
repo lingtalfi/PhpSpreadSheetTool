@@ -39,6 +39,10 @@ class PhpSpreadSheetTool
      *      - delimiter: string = , (semicolon), the delimiter char
      *      - enclosure: string = " (double quote), the enclosure char
      *      - lineEnding: string = PHP_EOL, the line ending char
+     * - extension: string, to force extension.
+     *          You might want to use it when using:
+     *              - file: php://output
+     *              - options.extension: xls (or whatever extension)
      *
      *
      *
@@ -54,6 +58,7 @@ class PhpSpreadSheetTool
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $columnNames = $options['columnNames'] ?? [];
+        $extension = $options['extension'] ?? null;
         if ($columnNames) {
             array_unshift($rows, $columnNames);
         }
@@ -71,7 +76,9 @@ class PhpSpreadSheetTool
 
 
         // https://phpspreadsheet.readthedocs.io/en/latest/topics/reading-and-writing-to-file/
-        $extension = FileSystemTool::getFileExtension($file);
+        if (null === $extension) {
+            $extension = FileSystemTool::getFileExtension($file);
+        }
         switch ($extension) {
             case "ods":
                 $writer = new \PhpOffice\PhpSpreadsheet\Writer\Ods($spreadsheet);
@@ -108,4 +115,5 @@ class PhpSpreadSheetTool
 
         $writer->save($file);
     }
+
 }
